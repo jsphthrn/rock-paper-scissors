@@ -13,7 +13,7 @@ function getHumanChoice () {
 
 function playGame () {
 
-    function playRound (hChoice, cChoice) {
+    function playRound (hChoice, cChoice) { // h -> human, c -> Computer.
         console.log(`Human: ${hChoice}.`);
         console.log(`CPU: ${cChoice}`);
         if (hChoice === cChoice) {
