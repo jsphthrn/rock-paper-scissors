@@ -38,6 +38,7 @@ function playRound (hChoice, cChoice) { // h -> human, c -> Computer.
             systemScore++;
         }
     }
+    cleanLog();
     log.appendChild(round);
 }
 
@@ -59,6 +60,13 @@ function lastCheck() {
         log.appendChild(result);
     }
 }
+
+function cleanLog () {
+    if (Array.from(log.childNodes).length > 8) {
+        log.firstChild.remove();
+    }
+}
+
 
 const rock = document.querySelector("#rock");
 const paper = document.querySelector("#paper");
