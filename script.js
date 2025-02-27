@@ -6,56 +6,85 @@ function getSystemChoice () {
     else return ("scissors");
 }
 
-function getHumanChoice () {
-    let choice = prompt("Choose between rock, paper or scissors: ");
-    return `${choice}`;
-}
-
-function playGame () {
-
-    function playRound (hChoice, cChoice) { // h -> human, c -> Computer.
-        console.log(`Human: ${hChoice}.`);
-        console.log(`CPU: ${cChoice}`);
-        if (hChoice === cChoice) {
-            console.log("Draw!");
-            return ("draw");
-        } else if (hChoice === "paper") {
-            if (cChoice === "scissors") {
-                console.log("You lost this round! Scissors beat paper.");
-                return undefined;
+function playRound (hChoice, cChoice) { // h -> human, c -> Computer.
+    const log = document.querySelector(".log");
+    const round = document.createElement("p");
+    round.setAttribute("class", "log-text")
+    round.textContent = `User: ${hChoice} | System: ${cChoice} / `;
+    if (hChoice === cChoice) {
+        round.textContent += "Draw!";
+    } else if (hChoice === "paper") {
+        if (cChoice === "scissors") {
+            round.textContent += "You lost this round! Scissors beat paper.";
+            systemScore++;
             } else if (cChoice === "rock") {
-                console.log("You won this round! Paper beats rock.");
-                return 1;
-            }
-        } else if (hChoice === "rock") {
-            if (cChoice === "scissors") {
-                console.log("You won this round! Rock beats scissors.");
-                return 1;
-            } else if (cChoice === "paper") {
-                console.log("You lost this round! Paper beats rock.");
-                return undefined;
-            }
-        } else if (hChoice === "scissors") {
-            if (cChoice === "paper") {
-                console.log("You won this round! Scissors beats paper.");
-                return 1;
-            } else if (cChoice === "rock") {
-                console.log("You lost this round! Rock beats scissors.");
-                return undefined;
-            }
+            round.textContent += "You won this round! Paper beats rock.";
+            userScore++;
         }
-    
+    } else if (hChoice === "rock") {
+        if (cChoice === "scissors") {
+            round.textContent += "You won this round! Rock beats scissors.";
+            userScore++
+        } else if (cChoice === "paper") {
+            round.textContent += "You lost this round! Paper beats rock.";
+            systemScore++;
+        }
+    } else if (hChoice === "scissors") {
+        if (cChoice === "paper") {
+            round.textContent += "You won this round! Scissors beats paper.";
+            userScore++;
+        } else if (cChoice === "rock") {
+            round.textContent += "You lost this round! Rock beats scissors.";
+            systemScore++;
+        }
     }
-
-    let humanScore = 0;
-    let systemScore = 0;
-    let i = 1;
-
-    while (i <= 5) {
-        (playRound(getHumanChoice(), getSystemChoice())) ? humanScore = humanScore + 1 : systemScore = systemScore + 1;
-        i = i + 1;
-    }
-    console.log(`Human score: ${humanScore}`); // additional code.
-    console.log(`Computer score: ${systemScore}`); // additional code.
-    (humanScore > systemScore) ? console.log("You won the game!") : console.log("You lost the game!"); // additional code
+    log.appendChild(round);
 }
+
+function firstCheck () {
+    if (userScore === 5 || systemScore === 5) {
+        log.textContent = "";
+        userScore = 0;
+        systemScore = 0;
+        // result.textContent = `Final score: User ${userScore} | System ${systemScore}. `;
+    }
+}
+
+function lastCheck() {
+    if (userScore === 5) {
+        result.textContent = "You win!";
+        log.appendChild(result);
+    } else if (systemScore === 5) {
+        result.textContent = "The system wins!";
+        log.appendChild(result);
+    }
+}
+
+const rock = document.querySelector("#rock");
+const paper = document.querySelector("#paper");
+const scissors = document.querySelector("#scissors");
+const log = document.querySelector(".log");
+const result = document.createElement("p");
+let userScore = 0;
+let systemScore = 0;
+
+result.setAttribute("class", "log-text");
+// result.textContent = `Final score: User ${userScore} | System ${systemScore}. `;
+
+rock.addEventListener("click", () => {
+    firstCheck();
+    playRound("rock", getSystemChoice());
+    lastCheck();
+});
+
+paper.addEventListener("click", () => {
+    firstCheck();
+    playRound("paper", getSystemChoice());
+    lastCheck();
+});
+
+scissors.addEventListener("click", () => {
+    firstCheck();
+    playRound("scissors", getSystemChoice());
+    lastCheck();
+});
